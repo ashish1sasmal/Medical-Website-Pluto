@@ -38,7 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'patient',
+    'captcha',
+    'crispy_forms',
 ]
+
+GOOGLE_RECAPTCHA_SECRET_KEY = ''
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+RECAPTCHA_DOMAIN = 'www.recaptcha.net'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
