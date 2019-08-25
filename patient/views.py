@@ -16,4 +16,8 @@ class Doctorview(TemplateView):
 class Achieveview(TemplateView):
 	template_name='patient/achievements.html'
 
+class Registerview(TemplateView):
+	template_name='patient/register.html'
 
+class Loginview(TemplateView):
+	template_name='patient/login.html'

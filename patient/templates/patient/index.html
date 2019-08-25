@@ -10,7 +10,13 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="{% static 'patient/css/main.css' %}">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <body>
 
 <!-- Navbar (sit on top) -->
@@ -19,6 +25,9 @@
     <a href="{% url 'home' %}" class="w3-bar-item w3-button w3-wide "><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pluto</b></a>
     <!-- Right-sided navbar links -->
     <div class="w3-right w3-hide-small">
+      <a href="{% url 'login' %}" class="w3-bar-item w3-button"><i class="fa fa-sign-in"></i> LOGIN</a>
+
+      <a href="{% url 'register' %}" class="w3-bar-item w3-button"><i class="fa fa-user-plus"></i> REGISTER</a>
       <a href="{% url 'about' %}" class="w3-bar-item w3-button">ABOUT</a>
       <a href="{% url 'doctors' %}" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Doctors</a>
       <a href="{% url 'achieve' %}" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Achievements</a>
