@@ -20,8 +20,7 @@ class UserForm(UserCreationForm):
 
 
 class ProfileForm(forms.ModelForm):
-	gender=forms.ChoiceField(widget=forms.RadioSelect())
 	class Meta():
 		model = Profile
-		fields=('gender','phone',)
+		fields=('phone',)
 

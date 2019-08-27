@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .forms import UserForm
 from .forms import ProfileForm
+from django.contrib import messages
 # Create your views here.
 from django.views.generic import TemplateView
 
@@ -22,23 +23,27 @@ def register(request):
 		form = UserForm(data=request.POST)
 		profile_form=ProfileForm(data=request.POST)
 		if form.is_valid() and profile_form.is_valid():
-			recaptcha_response = request.POST.get('g-recaptcha-response')
-			data = {
-                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-                'response': recaptcha_response
-                }
-			r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
-			result = r.json()
-			print(result['success'])
-			if result['success']:
-				profile=profile_form.save()
-				profile.save()
-				name = form.cleaned_data.get('username')
-				user=form.save(commit=False)
-				user.username=name
-				user.save()
-				messages.success(request, f'Your account has been created! You are now able to log in')
-				return redirect('login')
+			# recaptcha_response = request.POST.get('g-recaptcha-response')
+			# data = {
+   #              'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+   #              'response': recaptcha_response
+   #              }
+			# r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+			# result = r.json()
+			# print(result['success'])
+			# if result['success']:
+			user=form.save(commit=False)
+			user.username=form.cleaned_data.get('email')
+			user.save()
+			profile=profile_form.save(commit=False)
+			profile.user=user
+			profile.save()
+			# name = form.cleaned_data.get('username')
+			# user=form.save(commit=False)
+			# user.username=name
+			
+			messages.success(request, f'Your account has been created! You are now able to log in')
+			return redirect('login')
 	else:
 		form = UserForm()
 		profile_form=ProfileForm()
