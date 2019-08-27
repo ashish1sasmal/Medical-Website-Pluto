@@ -25,9 +25,15 @@
     <a href="{% url 'home' %}" class="w3-bar-item w3-button w3-wide "><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pluto</b></a>
     <!-- Right-sided navbar links -->
     <div class="w3-right w3-hide-small">
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}?next=/login" class="w3-bar-item w3-button"><i class="fa fa-sign-in"></i> Logout</a>
+
+
+      {% else %}
       <a href="{% url 'login' %}" class="w3-bar-item w3-button"><i class="fa fa-sign-in"></i> LOGIN</a>
 
       <a href="{% url 'register' %}" class="w3-bar-item w3-button"><i class="fa fa-user-plus"></i> REGISTER</a>
+      {% endif %}
       <a href="{% url 'about' %}" class="w3-bar-item w3-button">ABOUT</a>
       <a href="{% url 'doctors' %}" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Doctors</a>
       <a href="{% url 'achieve' %}" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Achievements</a>
@@ -35,14 +41,7 @@
     </div>
     <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
-      <div >
-              {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{message.tags}}">{{message}}
-                </div>
-                {% endfor %}
-              {% endif %}
-            </div>
+            
 
 
     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
@@ -51,6 +50,14 @@
   </div>
 </div>
 
+<div >
+              {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{message.tags}}">{{message}}
+                </div>
+                {% endfor %}
+              {% endif %}
+            </div>
 <!-- Sidebar on small screens when clicking the menu icon -->
 <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>

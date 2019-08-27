@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from .forms import UserForm
+from django.contrib.auth import authenticate
 from .forms import ProfileForm
+from django.contrib.auth import login
 from django.contrib import messages
 # Create your views here.
 from django.views.generic import TemplateView
@@ -50,5 +52,18 @@ def register(request):
 
 	return render(request,'patient/register.html',{'form':form,'profile_form':profile_form})
 
-class Loginview(TemplateView):
-	template_name='patient/login.html'
+def user_login(request):
+	if request.method=='POST':
+		email=request.POST.get('email')
+		password=request.POST.get('password')
+		print(email,password)
+		user = authenticate(username=email, password=password)
+		if user:
+			if user.is_active:
+				login(request, user)
+				messages.success(request, f'You are logged in successfully!')
+				
+		else:
+			messages.error(request,'Please Check your username and password !')
+	return render(request,'patient/login.html')
+	
