@@ -5,9 +5,28 @@ from .forms import ProfileForm,AppointForm
 from django.contrib.auth import login
 from django.contrib import messages
 from .models import Appoint
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from django.views.generic import TemplateView
+import smtplib
+from datetime import datetime
 
+
+
+
+def sent_email(rec_email,message):
+
+		sender_email="canvashcode@gmail.com"
+		password="etpfedmqbfiwmcye"
+		now = datetime.now()
+		dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+		message=message+"\ndate and time ="+str(dt_string)
+		server=smtplib.SMTP('smtp.gmail.com:587')
+		server.starttls()
+		server.login(sender_email,password)
+		print("Login Success!")
+		server.sendmail(sender_email,rec_email,message)
+		print("Email has been sent to : ",rec_email)
 class Homeview(TemplateView):
 	template_name='patient/home.html'
 
@@ -17,7 +36,9 @@ class Aboutview(TemplateView):
 class Doctorview(TemplateView):
 	template_name='patient/doctors.html'
 	
+@login_required(login_url='/login')
 def appoint(request):
+
 	if request.method=='POST':
 		fullname=request.POST.get('fullname')
 		gender=request.POST.get('gender')
@@ -34,7 +55,7 @@ def appoint(request):
 		checkup=request.POST.get('checkup')
 		appoint=Appoint(full_name=fullname,gender=gender,phone=phone,birth=birth,address=address,city=city,state=state,postal=postal,country=country,email=email,past_record=past_record,reason=reason,checkup=checkup)
 		appoint.save()
-
+		sent_email(email,"Your appointment is confirmed!\nYou will get appointment time and date in future.\nThank You")
 		return redirect('home')
 	return render(request,'patient/appointment.html',{'appointform':AppointForm})
 
@@ -83,6 +104,7 @@ def user_login(request):
 			if user.is_active:
 				login(request, user)
 				messages.success(request, f'You are logged in successfully!')
+				return redirect('home')
 				
 		else:
 			messages.error(request,'Please Check your username and password !')
