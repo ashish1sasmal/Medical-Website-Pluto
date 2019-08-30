@@ -13,8 +13,9 @@ class Profile(models.Model):
 		return f'{self.user.username} Profile'
 
 class Booking(models.Model):
-	count=models.IntegerField()
-	date=models.DateField()
+	c1=models.IntegerField()
+	c2=models.IntegerField()
+	adate=models.CharField(max_length=20)
 
 class Appoint(models.Model):
 	full_name=models.CharField(max_length=40)
@@ -30,3 +31,7 @@ class Appoint(models.Model):
 	past_record=models.BooleanField()
 	reason=models.TextField()
 	checkup=models.CharField(max_length=20)
+	time=models.CharField(max_length=20)
+	adate=models.DateField()
+	time=models.CharField(max_length=20)
+

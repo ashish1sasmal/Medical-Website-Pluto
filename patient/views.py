@@ -4,12 +4,15 @@ from django.contrib.auth import authenticate
 from .forms import ProfileForm,AppointForm
 from django.contrib.auth import login
 from django.contrib import messages
-from .models import Appoint
+from .models import Appoint,Booking
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from django.views.generic import TemplateView
 import smtplib
-from datetime import datetime
+from datetime import datetime, timedelta
+from .models import Booking
+
+
 
 
 
@@ -40,6 +43,8 @@ class Doctorview(TemplateView):
 def appoint(request):
 
 	if request.method=='POST':
+		d=Booking.objects.filter()[:1].get()
+		f=d.adate
 		fullname=request.POST.get('fullname')
 		gender=request.POST.get('gender')
 		phone=request.POST.get('phone')
@@ -53,8 +58,28 @@ def appoint(request):
 		past_record=request.POST.get('past_record')
 		reason=request.POST.get('reason')
 		checkup=request.POST.get('checkup')
-		appoint=Appoint(full_name=fullname,gender=gender,phone=phone,birth=birth,address=address,city=city,state=state,postal=postal,country=country,email=email,past_record=past_record,reason=reason,checkup=checkup)
+		time=""
+		adate=""
+
+		if d.c1<50:
+			d.c1+=1
+			time="12:00 AM"
+		elif d.c2<50:
+			d.c2+=1
+			time="6:00 PM"
+		else:
+			d.adate=(datetime.strptime(f, '%Y-%m-%d') + timedelta(days=1)).strftime('%Y-%m-%d')
+			time="12:00 AM"
+			d.c1=1
+			d.c2=0
+
+		d.save()
+		adate=d.adate
+		appoint=Appoint(full_name=fullname,gender=gender,phone=phone,birth=birth,address=address,city=city,state=state,postal=postal,country=country,email=email,past_record=past_record,reason=reason,checkup=checkup,time=time,adate=adate)
 		appoint.save()
+		
+
+
 		sent_email(email,"Your appointment is confirmed!\nYou will get appointment time and date in future.\nThank You")
 		return redirect('home')
 	return render(request,'patient/appointment.html',{'appointform':AppointForm})
@@ -110,3 +135,4 @@ def user_login(request):
 			messages.error(request,'Please Check your username and password !')
 	return render(request,'patient/login.html')
 	
+
