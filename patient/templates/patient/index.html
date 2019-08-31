@@ -29,7 +29,8 @@
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-card" id="myNavbar">
-    <a href="{% url 'home' %}" class="w3-bar-item w3-button w3-wide "><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pluto</b></a>
+    <a href="{% url 'home' %}" class="w3-bar-item w3-button w3-wide " id="pluto"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-pagelines" aria-hidden="true">Pluto</i>
+</b></a>
     <!-- Right-sided navbar links -->
     <div class="w3-right w3-hide-small">
       {% if user.is_authenticated %}
@@ -68,6 +69,16 @@
 <!-- Sidebar on small screens when clicking the menu icon -->
 <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
+  {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" onclick="w3_close()" class="w3-bar-item w3-button"> Logout</a>
+
+
+      {% else %}
+            <a href="{% url 'login' %}" onclick="w3_close()" class="w3-bar-item w3-button">LOGIN</a>
+  <a href="{% url 'register' %}" onclick="w3_close()" class="w3-bar-item w3-button">SIGNUP</a>
+
+      
+      {% endif %}
   <a href="{% url 'about' %}" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
   <a href="{% url 'doctors' %}" onclick="w3_close()" class="w3-bar-item w3-button">DOCTORS</a>
   <a href="{% url 'achieve' %}" onclick="w3_close()" class="w3-bar-item w3-button">ACHIEVEMENTS</a>

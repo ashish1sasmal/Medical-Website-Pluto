@@ -1,11 +1,22 @@
 
+@import url('https://fonts.googleapis.com/css?family=Acme&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Denk+One&display=swap');
 
+body,h1,h2,h3,h4,h5,h6 {font-family: 'Fjalla One', sans-serif;}
 
-.helptext{
-	visibility: hidden;
+#pluto{
+font-family: 'Denk One', sans-serif;
+  font-size: 1.5em;
+  margin-top: -0.5%;
 }
 
-body,h1,h2,h3,h4,h5,h6 {font-family: "chilanka", sans-serif}
+.w3-top{
+  font-family: 'Acme', sans-serif;
+  font-size: 1.2em;
+  margin-top: 0%;
+  margin-bottom: 0px;
+  background-color: grey;
+}
 
 body, html {
   height: 100%;
@@ -127,7 +138,7 @@ body {
 	background:#c8c8c8;
 	background:url(https://hdqwalls.com/download/material-design-4k-2048x1152.jpg) fixed;
 	background-size: cover;
-	font:600 16px/18px 'Open Sans',sans-serif;
+	font:600 16px/18px 'Fjalla One', sans-serif;;
 }
 :after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}
