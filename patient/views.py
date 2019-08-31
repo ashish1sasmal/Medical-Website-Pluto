@@ -12,19 +12,18 @@ import smtplib
 from datetime import datetime, timedelta
 from .models import Booking
 from email.message import EmailMessage
-from django.core.mail import send_mail, EmailMultiAlternatives
-from django.template.loader import get_template
 
-import smtplib
-import os
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
+
+import requests
+from django.conf import settings
+import json
+import urllib
 
 
 def sent_email(rec_email,sub,message,info):
 
-		j=info['info']
+		
 		
 
 
@@ -36,41 +35,45 @@ def sent_email(rec_email,sub,message,info):
 		password="etpfedmqbfiwmcye"
 		sender_email="canvashcode@gmail.com"
 		
-		msg.add_alternative(f"""\
-				<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		if info:
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  
+			j=info['info']
+			msg.add_alternative(f"""\
+					<!doctype html>
+	<html lang="en">
+	  <head>
+	    <!-- Required meta tags -->
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title></title>
-  </head>
-  <body>
-    <div class="jumbotron"  >
-      <h1>Your Appointment has been confirmed on </h1>
-      <h2 ><i>Date : {j[0]} </i></h1>
-      <h2><i>Timings : {j[1]} </i></h1>
-       <h2><i>Test :  {j[2]}.</i></h1><br>
-       <h2><i>CheckUp Number : {j[6]}</i></h1>
-      <h3>Patient's Details : : </h2>
-      <h5>Name : {j[3]}</h5>
-      <h5>Gender : {j[4]}</h5>
-      <h5>DOB : {j[5]}</h5>
-    </div>
+	    <!-- Bootstrap CSS -->
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	  
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
-</html>
-			""",subtype='html')
+	    <title></title>
+	  </head>
+	  <body>
+	    <div class="jumbotron"  >
+	      <h1>Your Appointment has been confirmed on </h1>
+	      <h2 ><i>Date : {j[0]} </i></h1>
+	      <h2><i>Timings : {j[1]} </i></h1>
+	       <h2><i>Test :  {j[2]}.</i></h1><br>
+	       <h2><i>CheckUp Number : {j[6]}</i></h1>
+	      <h3>Patient's Details : : </h2>
+	      <h5>Name : {j[3]}</h5>
+	      <h5>Gender : {j[4]}</h5>
+	      <h5>DOB : {j[5]}</h5>
+	    </div>
+
+	    <!-- Optional JavaScript -->
+	    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	  </body>
+	</html>
+				""",subtype='html')
+	
 		now = datetime.now()
 		dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 		message=message+"\ndate and time ="+str(dt_string)
@@ -148,27 +151,27 @@ def register(request):
 		form = UserForm(data=request.POST)
 		profile_form=ProfileForm(data=request.POST)
 		if form.is_valid() and profile_form.is_valid():
-			# recaptcha_response = request.POST.get('g-recaptcha-response')
-			# data = {
-   #              'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-   #              'response': recaptcha_response
-   #              }
-			# r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
-			# result = r.json()
-			# print(result['success'])
-			# if result['success']:
-			user=form.save(commit=False)
-			user.username=form.cleaned_data.get('email')
-			user.save()
-			profile=profile_form.save(commit=False)
-			profile.user=user
-			profile.save()
-			# name = form.cleaned_data.get('username')
-			# user=form.save(commit=False)
-			# user.username=name
-			
-			messages.success(request, f'Your account has been created! You are now able to log in')
-			return redirect('login')
+			recaptcha_response = request.POST.get('g-recaptcha-response')
+			data = {
+                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                'response': recaptcha_response
+                }
+			r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+			result = r.json()
+			print(result['success'])
+			if result['success']:
+				user=form.save(commit=False)
+				user.username=form.cleaned_data.get('email')
+				user.save()
+				profile=profile_form.save(commit=False)
+				profile.user=user
+				profile.save()
+				# name = form.cleaned_data.get('username')
+				# user=form.save(commit=False)
+				# user.username=name
+				
+				messages.success(request, f'Your account has been created! You are now able to log in')
+				return redirect('login')
 	else:
 		form = UserForm()
 		profile_form=ProfileForm()
@@ -199,7 +202,7 @@ def contact(request):
 		subject=request.POST.get('subject')
 		message=request.POST.get('message')
 
-		sent_email('ashishsasmal1@gmail.com',"Message from patient",f"Name : {name}\nEmail : {email}\nSubject : {subject}\nMessage : {message}")
+		sent_email('ashishsasmal1@gmail.com',"Message from patient",f"Name : {name}\nEmail : {email}\nSubject : {subject}\nMessage : {message}","")
 
 		
 		info="Your message has been submited!"

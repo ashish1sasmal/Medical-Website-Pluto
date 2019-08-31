@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 ]
 
-GOOGLE_RECAPTCHA_SECRET_KEY = ''
+GOOGLE_RECAPTCHA_SECRET_KEY = '6Lfk8rUUAAAAABkgjhR8KWU_zVVXebvtJtPu7T2f'
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 RECAPTCHA_DOMAIN = 'www.recaptcha.net'
 
