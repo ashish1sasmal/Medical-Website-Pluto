@@ -32,8 +32,8 @@ def sent_email(rec_email,sub,message,info):
 		msg['From'] = "canvashcode@gmail.com"
 		msg['To'] = rec_email
 		msg.set_content(f'{message}')
-		password="etpfedmqbfiwmcye"
-		sender_email="canvashcode@gmail.com"
+		password=""
+		sender_email=""
 		
 		if info:
 
