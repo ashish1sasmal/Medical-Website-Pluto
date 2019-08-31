@@ -13,12 +13,9 @@ from datetime import datetime, timedelta
 from .models import Booking
 from email.message import EmailMessage
 
-
-
-import requests
 from django.conf import settings
-import json
-import urllib
+
+
 
 
 def sent_email(rec_email,sub,message,info):
@@ -29,13 +26,13 @@ def sent_email(rec_email,sub,message,info):
 
 		msg=EmailMessage()
 		msg['Subject'] = sub
-		msg['From'] = "canvashcode@gmail.com"
+		msg['From'] = settings.EMAIL_HOST_USER
 		msg['To'] = rec_email
 		msg.set_content(f'{message}')
-		password=""
-		sender_email=""
+		password=settings.EMAIL_HOST_PASSWORD
+		sender_email=settings.EMAIL_HOST_USER
 		
-		if info:
+		if info!={}:
 
 			j=info['info']
 			msg.add_alternative(f"""\
@@ -151,15 +148,7 @@ def register(request):
 		form = UserForm(data=request.POST)
 		profile_form=ProfileForm(data=request.POST)
 		if form.is_valid() and profile_form.is_valid():
-			recaptcha_response = request.POST.get('g-recaptcha-response')
-			data = {
-                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-                'response': recaptcha_response
-                }
-			r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
-			result = r.json()
-			print(result['success'])
-			if result['success']:
+			
 				user=form.save(commit=False)
 				user.username=form.cleaned_data.get('email')
 				user.save()
@@ -202,7 +191,7 @@ def contact(request):
 		subject=request.POST.get('subject')
 		message=request.POST.get('message')
 
-		sent_email('ashishsasmal1@gmail.com',"Message from patient",f"Name : {name}\nEmail : {email}\nSubject : {subject}\nMessage : {message}","")
+		sent_email('ashishsasmal1@gmail.com',"Message from patient",f"Name : {name}\nEmail : {email}\nSubject : {subject}\nMessage : {message}",{})
 
 		
 		info="Your message has been submited!"
