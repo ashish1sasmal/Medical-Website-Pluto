@@ -81,8 +81,11 @@ def appoint(request):
 
 
 		sent_email(email,"Your appointment is confirmed!\nYou will get appointment time and date in future.\nThank You")
-		return redirect('home')
+		return redirect('app-success')
 	return render(request,'patient/appointment.html',{'appointform':AppointForm})
+
+class Success(TemplateView):
+	template_name='patient/appointment_success.html'
 
 class Achieveview(TemplateView):
 	template_name='patient/achievements.html'
