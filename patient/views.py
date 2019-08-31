@@ -11,16 +11,61 @@ from django.views.generic import TemplateView
 import smtplib
 from datetime import datetime, timedelta
 from .models import Booking
+from email.message import EmailMessage
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import get_template
+
+import smtplib
+import os
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 
+def sent_email(rec_email,sub,message,info):
+
+		j=info['info']
+		
 
 
-
-def sent_email(rec_email,message):
-
-		sender_email="canvashcode@gmail.com"
+		msg=EmailMessage()
+		msg['Subject'] = sub
+		msg['From'] = "canvashcode@gmail.com"
+		msg['To'] = rec_email
+		msg.set_content(f'{message}')
 		password="etpfedmqbfiwmcye"
+		sender_email="canvashcode@gmail.com"
+		
+		msg.add_alternative(f"""\
+				<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title></title>
+  </head>
+  <body>
+    <div class="jumbotron">
+      <h1>Your Appointment has been confirmed on {j[0]} at {j[1]} for {j[2]}.</h1><br>
+      <h2>Patient's Details : : </h2><br>
+      <h5>Name : {j[3]}</h5><br>
+      <h5>Gender : {j[4]}</h5><br>
+      <h5>DOB : {j[5]}</h5>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
+			""",subtype='html')
 		now = datetime.now()
 		dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 		message=message+"\ndate and time ="+str(dt_string)
@@ -28,7 +73,7 @@ def sent_email(rec_email,message):
 		server.starttls()
 		server.login(sender_email,password)
 		print("Login Success!")
-		server.sendmail(sender_email,rec_email,message)
+		server.send_message(msg)
 		print("Email has been sent to : ",rec_email)
 class Homeview(TemplateView):
 	template_name='patient/home.html'
@@ -78,10 +123,9 @@ def appoint(request):
 		appoint=Appoint(full_name=fullname,gender=gender,phone=phone,birth=birth,address=address,city=city,state=state,postal=postal,country=country,email=email,past_record=past_record,reason=reason,checkup=checkup,time=time,adate=adate)
 		appoint.save()
 		
+		info="Hello"
 
-
-		sent_email(email,"Your appointment is confirmed!\nYou will get appointment time and date in future.\nThank You")
-		info=f'Your Appointment is confirmed On { adate } at  { time } for { checkup }.'
+		sent_email(email,"Appointment Confirmation","Hello ashish",info={'info':[adate,time,checkup,fullname,gender,birth]})
 		return render(request,'patient/success.html',{'info':info})
 	return render(request,'patient/appointment.html',{'appointform':AppointForm})
 
@@ -147,7 +191,7 @@ def contact(request):
 		subject=request.POST.get('subject')
 		message=request.POST.get('message')
 
-		sent_email('ashishsasmal1@gmail.com',"hello!")
+		sent_email('ashishsasmal1@gmail.com',"Message from patient",f"Name : {name}\nEmail : {email}\nSubject : {subject}\nMessage : {message}")
 
 		
 		info="Your message has been submited!"
