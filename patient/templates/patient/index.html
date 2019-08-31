@@ -6,8 +6,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"> -->
+<link href="https://fonts.googleapis.com/css?family=Chilanka&display=swap" rel="stylesheet"> <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="{% static 'patient/css/main.css' %}">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -19,7 +19,6 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 
-<link rel="stylesheet" type="text/css" href="{% static 'patient/css/main.css' %}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -87,11 +86,12 @@
     <p><i class="fa fa-phone fa-fw w3-xxlarge w3-margin-right"></i> Phone: +00 151515</p>
     <p><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: ashishsasmal1@gmail.com</p>
     <br>
-    <form action="/action_page.php" target="_blank">
-      <p><input class="w3-input w3-border" type="text" placeholder="Name" required name="Name"></p>
-      <p><input class="w3-input w3-border" type="text" placeholder="Email" required name="Email"></p>
-      <p><input class="w3-input w3-border" type="text" placeholder="Subject" required name="Subject"></p>
-      <p><input class="w3-input w3-border" type="text" placeholder="Message" required name="Message"></p>
+    <form method="POST">
+      {% csrf_token %}
+      <p><input class="w3-input w3-border" type="text" placeholder="Name" required name="Name" name='name'></p>
+      <p><input class="w3-input w3-border" type="text" placeholder="Email" name="email" required name="Email"></p>
+      <p><input class="w3-input w3-border" type="text" name="subject" placeholder="Subject" required name="Subject"></p>
+      <p><input class="w3-input w3-border" type="text" name="message" placeholder="Message" required name="Message"></p>
       <p>
         <button class="w3-button w3-black" type="submit">
           <i class="fa fa-paper-plane"></i> SEND MESSAGE

@@ -81,12 +81,13 @@ def appoint(request):
 
 
 		sent_email(email,"Your appointment is confirmed!\nYou will get appointment time and date in future.\nThank You")
-		return render(request,'patient/appointment_success.html',{'date':adate,'time':time,'test':checkup})
+		info=f'Your Appointment is confirmed On { adate } at  { time } for { checkup }.'
+		return render(request,'patient/success.html',{'info':info})
 	return render(request,'patient/appointment.html',{'appointform':AppointForm})
 
 class Success(TemplateView):
 	template_name='patient/appointment_success.html'
-	
+
 class Achieveview(TemplateView):
 	template_name='patient/achievements.html'
 
@@ -139,3 +140,16 @@ def user_login(request):
 	return render(request,'patient/login.html')
 	
 
+def contact(request):
+	if request.method=='POST':
+		name=request.POST.get('name')
+		email=request.POST.get('email')
+		subject=request.POST.get('subject')
+		message=request.POST.get('message')
+
+		sent_email('ashishsasmal1@gmail.com',"hello!")
+
+		
+		info="Your message has been submited!"
+		return render(request,'patient/success.html',{'info':info})
+	return render(request,'patient/home.html')

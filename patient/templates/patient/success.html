@@ -14,9 +14,9 @@
 			</div>
 			<div class="modal-body text-center">
 				<h4>Thank You !</h4>	
-				<p>Your Appointment is confirmed On {{ date }} at <br>{{ time }} for {{ test }}.</p>
+				<p>{{ info }}</p>
 				<p><b>Kindly check your email ,for further confirmation!</b></p>
-				<button class="btn btn-success" data-dismiss="modal"><span>Start Exploring</span> <i class="material-icons">&#xE5C8;</i></button>
+				<button class="btn btn-success" data-dismiss="modal"><a href="{% url 'home' %}"></a><span>Back To Home</span></a> <i class="material-icons">&#xE5C8;</i></button>
 			</div>
 		</div>
 	</div>

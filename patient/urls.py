@@ -11,5 +11,6 @@ urlpatterns = [
     path('appointments/',views.appoint,name='appointments'),
     path('login/',views.user_login,name='login'),
     path('success/',views.Success.as_view(),name='app-success'),
+    path('contact/',views.contact,name='contact'),
     path('logout/',auth_views.LogoutView.as_view(template_name='patient/login.html'),name='logout'),
 ]
