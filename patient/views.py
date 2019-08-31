@@ -46,15 +46,20 @@ def sent_email(rec_email,sub,message,info):
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
 
     <title></title>
   </head>
   <body>
-    <div class="jumbotron">
-      <h1>Your Appointment has been confirmed on {j[0]} at {j[1]} for {j[2]}.</h1><br>
-      <h2>Patient's Details : : </h2><br>
-      <h5>Name : {j[3]}</h5><br>
-      <h5>Gender : {j[4]}</h5><br>
+    <div class="jumbotron"  >
+      <h1>Your Appointment has been confirmed on </h1>
+      <h2 ><i>Date : {j[0]} </i></h1>
+      <h2><i>Timings : {j[1]} </i></h1>
+       <h2><i>Test :  {j[2]}.</i></h1><br>
+       <h2><i>CheckUp Number : {j[6]}</i></h1>
+      <h3>Patient's Details : : </h2>
+      <h5>Name : {j[3]}</h5>
+      <h5>Gender : {j[4]}</h5>
       <h5>DOB : {j[5]}</h5>
     </div>
 
@@ -105,27 +110,30 @@ def appoint(request):
 		checkup=request.POST.get('checkup')
 		time=""
 		adate=""
-
+		e=0
 		if d.c1<50:
 			d.c1+=1
+			e=d.c1
 			time="12:00 AM"
 		elif d.c2<50:
 			d.c2+=1
+			e=d.c2
 			time="6:00 PM"
 		else:
 			d.adate=(datetime.strptime(f, '%Y-%m-%d') + timedelta(days=1)).strftime('%Y-%m-%d')
 			time="12:00 AM"
 			d.c1=1
 			d.c2=0
+			e=d.c1
 
 		d.save()
 		adate=d.adate
 		appoint=Appoint(full_name=fullname,gender=gender,phone=phone,birth=birth,address=address,city=city,state=state,postal=postal,country=country,email=email,past_record=past_record,reason=reason,checkup=checkup,time=time,adate=adate)
 		appoint.save()
 		
-		info="Hello"
+		info=f"Your Appointment has been fixed.\n For {checkup} and timings : {time} on {adate} ."
 
-		sent_email(email,"Appointment Confirmation","Hello ashish",info={'info':[adate,time,checkup,fullname,gender,birth]})
+		sent_email(email,"Appointment Confirmation","Hello ashish",info={'info':[adate,time,checkup,fullname,gender,birth,e]})
 		return render(request,'patient/success.html',{'info':info})
 	return render(request,'patient/appointment.html',{'appointform':AppointForm})
 

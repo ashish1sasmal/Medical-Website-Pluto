@@ -7,16 +7,25 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style type="text/css">
+    h2{
+      color: red;
+    }
+  </style>
 
     <title></title>
   </head>
   <body>
     <div class="jumbotron">
-      <h1>Your Appointment has been confirmed on {adate} at {time} for {checkup}.</h1><br>
-      <h2>Patient's Details : : </h2><br>
-      <h5>Name : {name}</h5><br>
-      <h5>Gender : {gender}</h5><br>
-      <h5>DOB : {birth}</h5>
+      <h1>Your Appointment has been confirmed on </h1>
+      <h2>Date : {j[0]} </h1>
+      <h2>Timings : {j[1]} </h1>
+       <h2>Test :  {j[2]}.</h1><br>
+       <h2>CheckUp Number : {j[6]}</h1>
+      <h3>Patient's Details : : </h2>
+      <h5>Name : {j[3]}</h5>
+      <h5>Gender : {j[4]}</h5>
+      <h5>DOB : {j[5]}</h5>
     </div>
 
     <!-- Optional JavaScript -->
